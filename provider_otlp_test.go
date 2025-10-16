@@ -7,13 +7,11 @@ import (
 
 	"github.com/gostratum/core/logx"
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/zap"
 )
 
 // Helper function to create a test logger
 func getTestLogger() logx.Logger {
-	zapLogger := zap.NewNop()
-	return logx.ProvideAdapter(zapLogger)
+	return logx.NewNoopLogger()
 }
 
 func TestToAttribute(t *testing.T) {

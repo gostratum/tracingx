@@ -7,11 +7,10 @@ import (
 	"github.com/gostratum/core/logx"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.uber.org/zap"
 )
 
 func TestNewTracer(t *testing.T) {
-	logger := logx.ProvideAdapter(zap.NewNop())
+	logger := logx.NewNoopLogger()
 
 	t.Run("creates noop tracer when disabled", func(t *testing.T) {
 		params := Params{
