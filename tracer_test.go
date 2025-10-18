@@ -17,13 +17,13 @@ func TestSpanOptions(t *testing.T) {
 	})
 
 	t.Run("WithAttributes", func(t *testing.T) {
-		attrs := map[string]interface{}{
+		attrs := map[string]any{
 			"http.method": "GET",
 			"http.url":    "/api/users",
 		}
 		opt := WithAttributes(attrs)
 		config := &SpanConfig{
-			Attributes: make(map[string]interface{}),
+			Attributes: make(map[string]any),
 		}
 		opt(config)
 		assert.Equal(t, "GET", config.Attributes["http.method"])
@@ -42,7 +42,7 @@ func TestSpanOptions(t *testing.T) {
 func TestApplySpanOptions(t *testing.T) {
 	t.Run("applies multiple options", func(t *testing.T) {
 		timestamp := time.Now().Add(-1 * time.Hour)
-		attrs := map[string]interface{}{
+		attrs := map[string]any{
 			"service": "user-api",
 		}
 

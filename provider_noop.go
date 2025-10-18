@@ -17,11 +17,11 @@ func (p *noopProvider) Start(ctx context.Context, operationName string, opts ...
 	return ContextWithSpan(ctx, span), span
 }
 
-func (p *noopProvider) Extract(ctx context.Context, carrier interface{}) (context.Context, error) {
+func (p *noopProvider) Extract(ctx context.Context, carrier any) (context.Context, error) {
 	return ctx, nil
 }
 
-func (p *noopProvider) Inject(ctx context.Context, carrier interface{}) error {
+func (p *noopProvider) Inject(ctx context.Context, carrier any) error {
 	return nil
 }
 
@@ -34,10 +34,10 @@ type noopSpan struct {
 	ctx context.Context
 }
 
-func (s *noopSpan) End()                                 {}
-func (s *noopSpan) SetTag(key string, value interface{}) {}
-func (s *noopSpan) SetError(err error)                   {}
-func (s *noopSpan) LogFields(fields ...Field)            {}
-func (s *noopSpan) Context() context.Context             { return s.ctx }
-func (s *noopSpan) TraceID() string                      { return "" }
-func (s *noopSpan) SpanID() string                       { return "" }
+func (s *noopSpan) End()                         {}
+func (s *noopSpan) SetTag(key string, value any) {}
+func (s *noopSpan) SetError(err error)           {}
+func (s *noopSpan) LogFields(fields ...Field)    {}
+func (s *noopSpan) Context() context.Context     { return s.ctx }
+func (s *noopSpan) TraceID() string              { return "" }
+func (s *noopSpan) SpanID() string               { return "" }

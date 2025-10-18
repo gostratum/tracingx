@@ -46,7 +46,7 @@ func main() {
             // Start a span
             ctx, span := tracer.Start(ctx, "operation",
                 tracingx.WithSpanKind(tracingx.SpanKindServer),
-                tracingx.WithAttributes(map[string]interface{}{
+                tracingx.WithAttributes(map[string]any{
                     "user.id": "12345",
                     "action":  "create_order",
                 }),
@@ -96,7 +96,7 @@ tracing:
 ```go
 ctx, span := tracer.Start(ctx, "HandleRequest",
     tracingx.WithSpanKind(tracingx.SpanKindServer),
-    tracingx.WithAttributes(map[string]interface{}{
+    tracingx.WithAttributes(map[string]any{
         "http.method": "POST",
         "http.url":    "/api/orders",
     }),
@@ -109,7 +109,7 @@ defer span.End()
 ```go
 ctx, span := tracer.Start(ctx, "CallExternalAPI",
     tracingx.WithSpanKind(tracingx.SpanKindClient),
-    tracingx.WithAttributes(map[string]interface{}{
+    tracingx.WithAttributes(map[string]any{
         "http.url":    "https://api.example.com/data",
         "http.method": "GET",
     }),
@@ -132,7 +132,7 @@ defer span.End()
 // Producer
 ctx, span := tracer.Start(ctx, "PublishMessage",
     tracingx.WithSpanKind(tracingx.SpanKindProducer),
-    tracingx.WithAttributes(map[string]interface{}{
+    tracingx.WithAttributes(map[string]any{
         "messaging.system":      "kafka",
         "messaging.destination": "orders.created",
     }),

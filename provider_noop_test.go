@@ -25,7 +25,7 @@ func TestNoopProvider(t *testing.T) {
 
 	t.Run("Start with options", func(t *testing.T) {
 		ctx := context.Background()
-		attrs := map[string]interface{}{
+		attrs := map[string]any{
 			"http.method": "POST",
 		}
 
@@ -124,7 +124,7 @@ func TestNoopSpanCompleteWorkflow(t *testing.T) {
 		// Start parent span
 		parentCtx, parentSpan := provider.Start(ctx, "parent-operation",
 			WithSpanKind(SpanKindServer),
-			WithAttributes(map[string]interface{}{
+			WithAttributes(map[string]any{
 				"http.method": "GET",
 				"http.path":   "/api/users",
 			}),

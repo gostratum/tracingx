@@ -168,7 +168,7 @@ func TestOTLPSpanOperations(t *testing.T) {
 
 		spanCtx, span := provider.Start(ctx, "test-operation",
 			WithSpanKind(SpanKindServer),
-			WithAttributes(map[string]interface{}{
+			WithAttributes(map[string]any{
 				"http.method": "GET",
 				"http.status": 200,
 			}),

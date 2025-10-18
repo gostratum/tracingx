@@ -135,7 +135,7 @@ func (p *otlpProvider) Start(ctx context.Context, operationName string, opts ...
 }
 
 // Extract extracts trace context from a carrier
-func (p *otlpProvider) Extract(ctx context.Context, carrier interface{}) (context.Context, error) {
+func (p *otlpProvider) Extract(ctx context.Context, carrier any) (context.Context, error) {
 	propagator := otel.GetTextMapPropagator()
 
 	// Handle different carrier types
@@ -155,7 +155,7 @@ func (p *otlpProvider) Extract(ctx context.Context, carrier interface{}) (contex
 }
 
 // Inject injects trace context into a carrier
-func (p *otlpProvider) Inject(ctx context.Context, carrier interface{}) error {
+func (p *otlpProvider) Inject(ctx context.Context, carrier any) error {
 	propagator := otel.GetTextMapPropagator()
 
 	// Handle different carrier types
@@ -193,7 +193,7 @@ func (s *otlpSpan) End() {
 	s.span.End()
 }
 
-func (s *otlpSpan) SetTag(key string, value interface{}) {
+func (s *otlpSpan) SetTag(key string, value any) {
 	s.span.SetAttributes(toAttribute(key, value))
 }
 
@@ -223,7 +223,7 @@ func (s *otlpSpan) SpanID() string {
 }
 
 // toAttribute converts a value to an OpenTelemetry attribute
-func toAttribute(key string, value interface{}) attribute.KeyValue {
+func toAttribute(key string, value any) attribute.KeyValue {
 	switch v := value.(type) {
 	case string:
 		return attribute.String(key, v)

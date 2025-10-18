@@ -11,10 +11,10 @@ type Tracer interface {
 	Start(ctx context.Context, operationName string, opts ...SpanOption) (context.Context, Span)
 
 	// Extract extracts trace context from a carrier (e.g., HTTP headers)
-	Extract(ctx context.Context, carrier interface{}) (context.Context, error)
+	Extract(ctx context.Context, carrier any) (context.Context, error)
 
 	// Inject injects trace context into a carrier (e.g., HTTP headers)
-	Inject(ctx context.Context, carrier interface{}) error
+	Inject(ctx context.Context, carrier any) error
 
 	// Shutdown gracefully shuts down the tracer
 	Shutdown(ctx context.Context) error
@@ -26,7 +26,7 @@ type Span interface {
 	End()
 
 	// SetTag sets a tag/attribute on the span
-	SetTag(key string, value interface{})
+	SetTag(key string, value any)
 
 	// SetError marks the span as errored
 	SetError(err error)
@@ -50,7 +50,7 @@ type SpanOption func(*SpanConfig)
 // SpanConfig contains configuration for creating a span
 type SpanConfig struct {
 	Kind       SpanKind
-	Attributes map[string]interface{}
+	Attributes map[string]any
 	Timestamp  time.Time
 }
 
@@ -77,7 +77,7 @@ const (
 // Field represents a structured log field
 type Field struct {
 	Key   string
-	Value interface{}
+	Value any
 }
 
 // WithSpanKind sets the span kind
@@ -88,10 +88,10 @@ func WithSpanKind(kind SpanKind) SpanOption {
 }
 
 // WithAttributes sets attributes on the span
-func WithAttributes(attrs map[string]interface{}) SpanOption {
+func WithAttributes(attrs map[string]any) SpanOption {
 	return func(c *SpanConfig) {
 		if c.Attributes == nil {
-			c.Attributes = make(map[string]interface{})
+			c.Attributes = make(map[string]any)
 		}
 		for k, v := range attrs {
 			c.Attributes[k] = v
@@ -110,7 +110,7 @@ func WithTimestamp(t time.Time) SpanOption {
 func applySpanOptions(opts ...SpanOption) *SpanConfig {
 	config := &SpanConfig{
 		Kind:       SpanKindInternal,
-		Attributes: make(map[string]interface{}),
+		Attributes: make(map[string]any),
 		Timestamp:  time.Now(),
 	}
 	for _, opt := range opts {
