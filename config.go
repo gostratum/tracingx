@@ -1,6 +1,8 @@
 package tracingx
 
 import (
+	"strings"
+
 	"github.com/gostratum/core/configx"
 )
 
@@ -59,4 +61,33 @@ func NewConfig(loader configx.Loader) (Config, error) {
 		return cfg, err
 	}
 	return cfg, nil
+}
+
+// Sanitize returns a copy of the tracing Config with secret-like header values redacted.
+func (c Config) Sanitize() Config {
+	out := c
+	if out.OTLP.Headers != nil {
+		out.OTLP.Headers = make(map[string]string, len(c.OTLP.Headers))
+		for k, v := range c.OTLP.Headers {
+			lk := strings.ToLower(k)
+			if strings.Contains(lk, "token") || strings.Contains(lk, "key") || strings.Contains(lk, "secret") || strings.Contains(lk, "authorization") {
+				out.OTLP.Headers[k] = "[redacted]"
+			} else {
+				out.OTLP.Headers[k] = v
+			}
+		}
+	}
+	return out
+}
+
+// ConfigSummary returns a compact diagnostic map for tracing configuration.
+func (c Config) ConfigSummary() map[string]any {
+	hasHeaders := len(c.OTLP.Headers) > 0
+	return map[string]any{
+		"enabled":          c.Enabled,
+		"provider":         c.Provider,
+		"service_name":     c.ServiceName,
+		"otlp_endpoint":    c.OTLP.Endpoint,
+		"otlp_has_headers": hasHeaders,
+	}
 }

@@ -6,6 +6,34 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestSanitizeOTLPHeaders(t *testing.T) {
+	cfg := Config{
+		Enabled:     true,
+		Provider:    "otlp",
+		ServiceName: "svc",
+		OTLP: OTLPConfig{
+			Endpoint: "http://collector:4317",
+			Headers: map[string]string{
+				"Authorization": "Bearer secrettoken",
+				"X-Custom":      "value",
+			},
+		},
+	}
+
+	s := cfg.Sanitize()
+	if s.OTLP.Headers["Authorization"] != "[redacted]" {
+		t.Fatalf("authorization header not redacted")
+	}
+	if s.OTLP.Headers["X-Custom"] != "value" {
+		t.Fatalf("non-secret header unexpectedly redacted")
+	}
+
+	summary := cfg.ConfigSummary()
+	if summary["otlp_has_headers"] != true {
+		t.Fatalf("expected otlp_has_headers true")
+	}
+}
+
 func TestConfigStructure(t *testing.T) {
 	t.Run("config has correct prefix", func(t *testing.T) {
 		cfg := Config{}
