@@ -60,7 +60,8 @@ func NewConfig(loader configx.Loader) (Config, error) {
 	if err := loader.Bind(&cfg); err != nil {
 		return cfg, err
 	}
-	return cfg, nil
+	// Sanitize defaults/headers before returning
+	return cfg.Sanitize(), nil
 }
 
 // Sanitize returns a copy of the tracing Config with secret-like header values redacted.
