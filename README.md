@@ -543,6 +543,10 @@ MIT License - see LICENSE file for details
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for a complete list of changes.
+
 ## Related Modules
 
 - [`core`](../core/README.md) - Foundation module
