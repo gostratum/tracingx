@@ -23,7 +23,7 @@ type Result struct {
 
 // Module provides the tracing module for fx
 func Module() fx.Option {
-	return fx.Module("tracing",
+	return fx.Module("tracingx",
 		fx.Provide(
 			NewConfig,
 			NewTracer,
