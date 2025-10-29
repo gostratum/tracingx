@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.2.0] - 2025-10-29
+
+### Added
+- None user-facing; release packaging and version bump for v0.2.0.
+
+### Changed
+- Update `github.com/gostratum/core` dependency to `v0.2.0`.
+
+### Fixed
+- Corrected module naming inconsistencies (module name aligned to `tracingx`).
+
+### Refactored
+- Internal type safety: replace `interface{}` with `any` across the module for clearer code and modern Go usage.
+
+### Tests
+- Added and updated tests; refactored logger initialization in tests to match new logging helpers.
+
+### Build / CI
+- Makefile and release scripts improved to support version management and streamlined releases.
+
+
+
 ## [0.1.5] - 2025-10-26
 
 ### Added
