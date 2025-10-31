@@ -20,7 +20,11 @@ func TestSanitizeOTLPHeaders(t *testing.T) {
 		},
 	}
 
-	s := cfg.Sanitize()
+	sanitized := cfg.Sanitize()
+	s, ok := sanitized.(Config)
+	if !ok {
+		t.Fatalf("Sanitize must return Config, got %T", sanitized)
+	}
 	if s.OTLP.Headers["Authorization"] != "[redacted]" {
 		t.Fatalf("authorization header not redacted")
 	}

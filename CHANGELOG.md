@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Config.Sanitize()** now returns `any` instead of `Config` to implement `logx.Sanitizable` interface
+  - This enables automatic secret sanitization when logging with `logx.Any()`
+  - Secret-like OTLP headers (token, key, secret, authorization) are automatically redacted when configs are logged
+  - **BREAKING:** If you were using the return value directly, add type assertion: `sanitized := cfg.Sanitize().(Config)`
+  - Tests added to verify `Sanitizable` interface compliance
+- **NewConfig()** no longer calls `Sanitize()` before returning; sanitization happens automatically via `logx.Any()` when logging
 
 ## [0.2.0] - 2025-10-29
 

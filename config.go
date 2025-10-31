@@ -60,12 +60,13 @@ func NewConfig(loader configx.Loader) (Config, error) {
 	if err := loader.Bind(&cfg); err != nil {
 		return cfg, err
 	}
-	// Sanitize defaults/headers before returning
-	return cfg.Sanitize(), nil
+	// Return the config; sanitization happens automatically via logx.Any() when logging
+	return cfg, nil
 }
 
 // Sanitize returns a copy of the tracing Config with secret-like header values redacted.
-func (c Config) Sanitize() Config {
+// This implements the logx.Sanitizable interface for automatic sanitization when logging.
+func (c Config) Sanitize() any {
 	out := c
 	if out.OTLP.Headers != nil {
 		out.OTLP.Headers = make(map[string]string, len(c.OTLP.Headers))
